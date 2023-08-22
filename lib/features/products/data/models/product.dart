@@ -13,6 +13,10 @@ class Product {
     required this.imageUrl,
   });
 
+  factory Product.empty() {
+    return Product(id: '', title: '', description: '', price: 0, imageUrl: '');
+  }
+
   factory Product.fromAddedProduct(
       {required Product addedProduct, required String idFromServer}) {
     return Product(
@@ -39,5 +43,21 @@ class Product {
       'price': price,
       'imageUrl': imageUrl
     };
+  }
+
+  Product copyWith({
+    String? id,
+    String? title,
+    String? description,
+    double? price,
+    String? imageUrl,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      imageUrl: imageUrl ?? this.imageUrl,
+    );
   }
 }

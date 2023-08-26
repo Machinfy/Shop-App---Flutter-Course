@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/features/products/presentation/screens/products_overview_screen.dart';
+import 'package:shop_app/features/cart/presentation/screens/cart_tab.dart';
+import 'package:shop_app/features/products/presentation/screens/products_overview_tab.dart';
 import 'package:shop_app/features/profile/presentation/screens/profile_tab.dart';
 
 class AppLayout extends StatelessWidget {
@@ -34,10 +35,11 @@ class AppLayout extends StatelessWidget {
           ),
         ),
         body: const TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             ProductsOverviewTab(),
             SizedBox(),
-            SizedBox(),
+            CartTab(),
             ProfileTab(),
           ],
         ),

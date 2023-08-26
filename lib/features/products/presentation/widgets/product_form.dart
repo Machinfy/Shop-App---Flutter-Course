@@ -4,10 +4,9 @@ import 'package:shop_app/features/products/data/models/product.dart';
 import 'package:shop_app/features/products/logic/cubit/products_cubit.dart';
 
 class ProductForm extends StatefulWidget {
-  const ProductForm({
-    super.key,
-  });
+  const ProductForm({super.key, required this.updatedProductId});
 
+  final String? updatedProductId;
   @override
   State<ProductForm> createState() => _ProductFormState();
 }
@@ -16,13 +15,30 @@ class _ProductFormState extends State<ProductForm> {
   final _priceFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
   var _managedProduct = Product.empty();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.updatedProductId != null) {
+      final updatedProduct = context
+          .read<ProductsCubit>()
+          .findProductById(widget.updatedProductId!);
+      _managedProduct = updatedProduct;
+    }
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print('Date Is Valid');
-      context
-          .read<ProductsCubit>()
-          .addNewProduct(addedProduct: _managedProduct);
+      if (widget.updatedProductId == null) {
+        context
+            .read<ProductsCubit>()
+            .addNewProduct(addedProduct: _managedProduct);
+      } else {
+        context
+            .read<ProductsCubit>()
+            .updateProduct(updatedProduct: _managedProduct);
+      }
     }
   }
 
@@ -51,6 +67,7 @@ class _ProductFormState extends State<ProductForm> {
                 child: Column(
                   children: [
                     TextFormField(
+                      initialValue: _managedProduct.title,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'You Should Enter The Title';
@@ -73,6 +90,11 @@ class _ProductFormState extends State<ProductForm> {
                     ),
                     const Divider(),
                     TextFormField(
+                      initialValue: widget.updatedProductId == null
+                          ? null
+                          : _managedProduct.price.toString(),
+                      //initialValue: '${_managedProduct.price}'),
+
                       focusNode: _priceFocusNode,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -104,6 +126,7 @@ class _ProductFormState extends State<ProductForm> {
                     ),
                     const Divider(),
                     TextFormField(
+                      initialValue: _managedProduct.description,
                       textInputAction: TextInputAction.newline,
                       keyboardType: TextInputType.multiline,
                       validator: (value) {
@@ -142,6 +165,7 @@ class _ProductFormState extends State<ProductForm> {
                         Expanded(
                           flex: 3,
                           child: TextFormField(
+                            initialValue: _managedProduct.imageUrl,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'You Should Enter Image URL!';
@@ -181,7 +205,7 @@ class _ProductFormState extends State<ProductForm> {
                 onPressed: _submitForm,
                 style:
                     ElevatedButton.styleFrom(minimumSize: const Size(220, 45)),
-                child: const Text('Add'),
+                child: Text(widget.updatedProductId == null ? 'Add' : 'Update'),
               );
             },
           )

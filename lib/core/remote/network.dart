@@ -25,8 +25,6 @@ class NetworkService {
       {required String path, Map<String, dynamic>? queryParameters}) async {
     _init();
     final response = await _dio!.get(path, queryParameters: queryParameters);
-    print('From Network Service');
-    print(response);
     return response.data;
   }
 
@@ -37,8 +35,6 @@ class NetworkService {
     _init();
     final response =
         await _dio!.post(path, queryParameters: queryParameters, data: data);
-
-    print(response);
     return response.data;
   }
 
@@ -53,7 +49,6 @@ class NetworkService {
       queryParameters: queryParameters,
       data: data,
     );
-    print(response);
     return response.data;
   }
 
@@ -65,8 +60,6 @@ class NetworkService {
     _init();
     final response =
         await _dio!.delete(path, queryParameters: queryParameters, data: data);
-
-    print(response);
     return response.data;
   }
 }

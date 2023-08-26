@@ -2,27 +2,22 @@ import 'package:shop_app/features/products/data/data_source/products_data_source
 import 'package:shop_app/features/products/data/models/product.dart';
 
 class ProductsRepo {
-  final productsDataSource = ProductsDataSource();
+  final _productsDataSource = ProductsDataSource();
 
   Future<List<Product>> getProducts() async {
-    final productsRawData = await productsDataSource.getProductsRawData();
+    final productsRawData = await _productsDataSource.getProductsRawData();
 
     final List<Product> products = [];
 
     productsRawData.forEach((productId, productData) {
       products.add(Product.fromJson(productId, productData));
     });
-    print('From Products Repo');
-
-    print(products);
     return products;
   }
 
   Future<Product> addNewProduct(Product addedProduct) async {
-    final generatedIdFromServer =
-        await productsDataSource.addProductRawData(data: addedProduct.toJson());
-
-    print(generatedIdFromServer);
+    final generatedIdFromServer = await _productsDataSource.addProductRawData(
+        data: addedProduct.toJson());
 
     // return Product(
     //     id: generatedIdFromServer,
@@ -32,5 +27,14 @@ class ProductsRepo {
     //     imageUrl: addedProduct.imageUrl);
     return Product.fromAddedProduct(
         addedProduct: addedProduct, idFromServer: generatedIdFromServer);
+  }
+
+  Future<void> updateProduct(Product updatedProduct) async {
+    return await _productsDataSource.updateProductRawData(
+        data: updatedProduct.toJson(), id: updatedProduct.id);
+  }
+
+  Future<void> deleteProduct(String deletedProductId) async {
+    return await _productsDataSource.deleteProductRawData(id: deletedProductId);
   }
 }

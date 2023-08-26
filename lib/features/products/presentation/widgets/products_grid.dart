@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/features/cart/logic/cubits/cart_cubit.dart';
 
 import '../../data/models/product.dart';
 
@@ -50,7 +52,12 @@ class ProductGridItem extends StatelessWidget {
             ),
             title: Text(product.title),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<CartCubit>().addCartItem(
+                    productId: product.id,
+                    title: product.title,
+                    price: product.price);
+              },
               icon: const Icon(Icons.add_shopping_cart_outlined),
             ),
           ),

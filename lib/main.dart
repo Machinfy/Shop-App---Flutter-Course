@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/features/cart/logic/cubits/cart_cubit.dart';
+import 'package:shop_app/features/orders/logic/cubits/orders_cubit.dart';
 import 'package:shop_app/features/products/logic/cubit/products_cubit.dart';
 import 'package:shop_app/features/products/presentation/screens/manage_product_screen.dart';
 import 'package:shop_app/features/products/presentation/screens/user_products_screen.dart';
@@ -17,7 +19,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ProductsCubit>(create: (context) => ProductsCubit())
+        BlocProvider<ProductsCubit>(create: (context) => ProductsCubit()),
+        BlocProvider<CartCubit>(create: (context) => CartCubit()),
+        BlocProvider<OrdersCubit>(create: (context) => OrdersCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

@@ -8,14 +8,20 @@ class ManageProductScreen extends StatelessWidget {
   static const routeName = '/manage-product';
   @override
   Widget build(BuildContext context) {
+    final routeData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    final updatedProductId = routeData?['updatedProductId'] as String?;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Product'),
+        title: Text(
+            updatedProductId == null ? 'Add New Product' : 'Update Product'),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: ProductForm(),
+          padding: const EdgeInsets.all(10.0),
+          child: ProductForm(
+            updatedProductId: updatedProductId,
+          ),
         ),
       ),
     );

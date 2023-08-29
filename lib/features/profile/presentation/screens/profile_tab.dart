@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/features/authentication/logic/cubits/auth_cubit.dart';
 import 'package:shop_app/features/products/presentation/screens/user_products_screen.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -27,8 +29,11 @@ class ProfileTab extends StatelessWidget {
             leadingIcon: Icons.settings,
           ),
           const Divider(),
-          const ProfileTabListTitle(
+          ProfileTabListTitle(
             title: 'Logout',
+            onPressed: () async {
+              context.read<AuthCubit>().logout();
+            },
             leadingIcon: Icons.logout,
           ),
         ],
